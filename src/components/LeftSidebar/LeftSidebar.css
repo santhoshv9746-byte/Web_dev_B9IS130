@@ -69,3 +69,13 @@
     cursor: pointer;
     font-size: 13px;
 }
+
+.friends div{
+    display: flex;
+    flex-direction: column;
+}
+
+.friends span{
+    color: #9f9f9f;
+    font-size: 11px;
+}
