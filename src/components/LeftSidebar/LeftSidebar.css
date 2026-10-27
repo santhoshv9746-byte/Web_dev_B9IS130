@@ -23,3 +23,27 @@
     opacity: 0.6;
     cursor: pointer;
 }
+
+.ls-search{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    margin-top: 20px;
+}
+
+.ls-search img{
+    width: 16px;
+}
+
+.ls-search input{
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 11px;
+}
+
+.ls-search input::placeholder{
+    color: #c8c8c8;
+}
