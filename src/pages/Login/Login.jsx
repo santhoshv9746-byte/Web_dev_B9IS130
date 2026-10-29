@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import './Login.css'
 import assets from '../../assets/assets'
-import { signup, login } from '../../config/firebase'
+import { signup,login } from '../../config/firebase'
 
-const login = () => {
+const Login = () => {
 
       const [currState,setCurrState] = useState("Sign up");
       const [userName,setUserName] = useState("");
@@ -16,9 +16,8 @@ const login = () => {
             signup(userName,email,password);
         }
         else{
-          login(email,password)
+          login(email,password);
         }
-
       }
 
   return (
@@ -46,4 +45,4 @@ const login = () => {
   )
 }
 
-export default login
+export default Login

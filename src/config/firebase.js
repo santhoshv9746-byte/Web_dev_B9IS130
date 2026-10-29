@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 
@@ -40,7 +40,7 @@ const signup = async (username, email, password) => {
         toast.success("Account created successfully!");
     } catch (error) {
         console.error(error);
-        toast.error(error.code);
+        toast.error(error.code.split('/')[1].split('-'.join(" ")));
     }
 }
 
@@ -49,8 +49,18 @@ const login = async (email,password) => {
         await signInWithEmailAndPassword(auth,email,password);
     } catch (error) {
         console.error(error);
-        toast.error(error.code);
+        toast.error(error.code.split('/')[1].split('-'.join(" ")));
     }
 }
 
-export { signup,login };
+const logout = async () => {
+    try {
+        await signOut(auth)
+    } catch (error) {
+        console.error(error);
+        toast.error(error.code.split('/')[1].split('-'.join(" ")));
+    }
+  
+}
+
+export { signup,login,logout, };
