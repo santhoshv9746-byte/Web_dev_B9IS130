@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './ProfileUpdate.css'
 import assets from '../../assets/assets'
 
 const ProfileUpdate = () => {
 
-    const [image,setImage] = useState(false);
+  const[image,setImage] = useState(false);
 
   return (
     <div className="profile">
@@ -20,7 +20,7 @@ const ProfileUpdate = () => {
             <textarea placeholder='Write profile bio' required></textarea>
             <button type='submit'>Save</button>
         </form>
-        <img className='profile-pic' src={assets.logo_icon} alt="" />
+        <img className='profile-pic' src={image? URL.createObjectURL(image) :assets.logo_icon} alt="" />
       </div>
     </div>
   )
