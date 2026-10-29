@@ -15,6 +15,9 @@ const login = () => {
         if (currState==="Sign up") {
             signup(userName,email,password);
         }
+        else{
+          login(email,password)
+        }
 
       }
 
