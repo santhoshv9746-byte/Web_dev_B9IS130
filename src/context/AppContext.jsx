@@ -63,11 +63,14 @@ const AppContextProvider = (props) => {
         }
     },[userData])
 
-    const value = {
-        userData,setUserData,
-        chatData,setChatData,
-        loadUserData
-    }
+  const value = {
+    userData,setUserData,
+    chatData,setChatData,
+    loadUserData,
+    messages,setMessages,
+    messagesId,setMessagesId,
+    chatuser,setChatUser,
+  }
 
     return(
         <AppContext.Provider value={value}>
