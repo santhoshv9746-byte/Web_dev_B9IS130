@@ -3,7 +3,12 @@ import './Chatbox.css'
 import assets from '../../assets/assets'
 
 const Chatbox = () => {
-  return (
+
+  const { userData, messageId, chatUser, messages, setMessages } = useContext(AppContext);
+
+  const [input,setInput] = useState("");
+
+  return chatUser ? (
     <div className="chat-box">
       <div className="chat-user">
         <img src={assets.profile_img} alt="" />
@@ -19,14 +24,14 @@ const Chatbox = () => {
             <p>2:30 PM</p>
           </div>
         </div>
-         <div className="s-msg">
+        <div className="s-msg">
           <img className='msg-img' src={assets.pic1} alt="" />
           <div>
             <img src={assets.profile_img} alt="" />
             <p>2:30 PM</p>
           </div>
         </div>
-         <div className="r-msg">
+        <div className="r-msg">
           <p className="msg">Hi message is commonly used in...</p>
           <div>
             <img src={assets.profile_img} alt="" />
@@ -47,6 +52,10 @@ const Chatbox = () => {
       </div>
     </div>
   )
+  : <div className='chat-welcome'>
+    <img src={assets.log_icon} alt="" />
+    <p>Chat anytime, anywhere</p>
+  </div>
 }
 
 export default Chatbox
