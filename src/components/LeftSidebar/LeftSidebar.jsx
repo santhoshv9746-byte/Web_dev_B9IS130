@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import './LeftSidebar.css'
 import assets from '../../assets/assets'
 import { useNavigate } from 'react-router-dom'
-import { collection, doc, getDoc, query, serverTimestamp } from 'firebase/firestore'
+import { collection, doc, getDoc, query, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { AppContext } from '../../context/AppContext'
 import { toast } from 'react-toastify'
 
@@ -85,6 +85,15 @@ const LeftSidebar = () => {
   const setChat = async (item) => {
     setMessagesId(item.messageId);
     setChatUser(item)
+    const userChatsRef = doc(db, 'chats', userData.id);
+    const userChatsSnapshot = await getDoc(userChatsRef);
+    const userChatsData = userChatsSnapshot.data()
+    const chatIndex = userChatsData.chatsData.findIndex((c)=>c.messageId===item.messageId);
+    userChatsData.chatData[chatIndex].messageSeen = true;
+    await updateDoc(userChatsRef),{
+      chatData:userChatsData.chatsData
+    }
+
   }
 
   return (
