@@ -1,5 +1,5 @@
-ChatApp – Real-Time Messaging Application
-B9IS130 – Web Development for Information Systems
+## ChatApp – Real-Time Messaging Application
+## B9IS130 – Web Development for Information Systems
 
 ChatApp is a web-based messaging application developed with React, Firebase, and Cloudinary. It allows registered users to find one another, exchange text messages and images, and update their personal profiles. Firestore listeners keep conversation data synchronized without manually refreshing the page.
 
@@ -210,6 +210,6 @@ Technical documentation
 - Vercel documentation: https://vercel.com/docs
 Tutorial and AI assistance disclosure
 
-This application was developed with reference to a chat application tutorial: https://www.youtube.com/watch?v=gbocZlm71nE . The codebase was subsequently adapted and tested for the B9IS130 project, including adjustments to Firebase integration, messaging, profiles, online status, and deployment.
+This application was developed with reference to a chat application tutorial: [https://www.youtube.com/watch?v=gbocZlm71nE](https://youtu.be/Vi9bxu-M-ag) . The codebase was subsequently adapted and tested for the B9IS130 project, including adjustments to Firebase integration, messaging, profiles, online status, and deployment.
 
 OpenAI ChatGPT was used as a development assistant for explaining React/Firebase concepts, debugging application errors, reviewing code
