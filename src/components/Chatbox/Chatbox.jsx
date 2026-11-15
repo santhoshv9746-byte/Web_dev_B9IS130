@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 const Chatbox = () => {
 
-  const { userData, messageId, chatUser, messages, setMessages } = useContext(AppContext);
+  const { userData, messageId, chatUser, messages, setMessage, chatVisible, setChatVisible } = useContext(AppContext);
 
   const [input, setInput] = useState("");
 
@@ -112,11 +112,12 @@ const Chatbox = () => {
 }, [messagesId])
 
 return chatUser ? (
-  <div className="chat-box">
+  <div className={`chat-box ${chatVisible?"":"hidden"}`}>
     <div className="chat-user">
       <img src={chatUser.userData.avatar} alt="" />
       <p>{chatUser.userData.name} {Date.now() - chatUser.userData.lastSeen <= 70000 ? <img className='dot' src={assets.green_dot} alt="" /> : null}</p>
       <img src={assets.help_icon} className='help' alt="" />
+      <img onClick={()=>setChatVisible(false)} src={assets.arrow_icon} className='arrow' alt="" />
     </div>
 
     <div className="chat-msg">
@@ -149,7 +150,7 @@ return chatUser ? (
     </div>
   </div>
 
-  : <div className='chat-welcome'>
+  : <div className={`chat-welcome ${chatVisible?"":"hidden"}`}>
     <img src={assets.log_icon} alt="" />
     <p>Chat anytime, anywhere</p>
   </div>
