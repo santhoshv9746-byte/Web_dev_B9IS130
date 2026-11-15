@@ -5,7 +5,7 @@ ChatApp is a web-based messaging application developed with React, Firebase, and
 
 Source code: https://github.com/santhoshv9746-byte/Web_dev_B9IS130
 Live application: https://web-dev-b9-is-130.vercel.app/chat
-Table of Contents
+### Table of Contents
 1. Project Overview
 2. Technology Stack
 3. System Architecture
@@ -17,7 +17,7 @@ Table of Contents
 9. Security and Current Limitations
 10. Testing
 11. References and Development Acknowledgements
-1. Project Overview
+## 1. Project Overview
 The objective of ChatApp is to provide a straightforward interface for communication between registered users. The application supports account creation, authentication, user search, one-to-one conversations, text and image messages, and profile management.
 
 The application is built with React on the frontend and Firebase Authentication and Cloud Firestore as managed backend services. Cloudinary provides image hosting. This is a JavaScript-based application using Backend-as-a-Service (BaaS), not a conventional MERN stack with an Express server and MongoDB.
@@ -28,7 +28,8 @@ Project objectives
 - Display conversations and messages in real time.
 - Integrate an external service for image uploads.
 - Deploy the frontend and maintain the project using Git and GitHub.
-2. Technology Stack
+
+## 2. Technology Stack
 Layer	Technology	Purpose
 Frontend	React 19, JavaScript, CSS	User interface and interaction
 Build tooling	Vite 8	Local development and production builds
@@ -43,7 +44,7 @@ Version control	Git and GitHub	Source-code management
 Frontend hosting	Vercel	Application deployment
 
 
-3. System Architecture
+## 3. System Architecture
 Browser (React + Vite)
    |
    +-- Firebase Authentication
@@ -58,20 +59,21 @@ Browser (React + Vite)
           +-- Profile and chat images
           +-- Hosted image URLs stored in Firestore
 React components interact with Firebase directly through the Firebase client SDK. Firestore snapshot listeners update the interface when documents change. For image messages, the app uploads the selected image to Cloudinary and stores the returned URL with the message in Firestore.
-4. Application Features
-4.1 Registration and Login
+
+## 4. Application Features
+# 4.1 Registration and Login
 Main files: src/pages/Login/Login.jsx, src/config/firebase.js
 - New users register with a username, email address, and password.
 - Firebase Authentication manages account credentials.
 - The app creates a matching user profile and an empty chat-list document in Firestore.
 - Existing users can sign in, log out, and request a password-reset email.
-4.2 User Search and Conversation Creation
+# 4.2 User Search and Conversation Creation
 Main file: src/components/LeftSidebar/LeftSidebar.jsx
 - Users can search for another account by username.
 - Selecting a search result creates a one-to-one conversation.
 - A Firestore transaction writes the initial conversation document and updates both chat lists.
 - The sidebar displays conversation previews ordered by their latest update time.
-4.3 Real-Time Text Messaging
+# 4.3 Real-Time Text Messaging
 Main files: src/components/Chatbox/Chatbox.jsx, src/context/AppContext.jsx
 - Users send and receive text messages within a selected conversation.
 - Firestore onSnapshot listeners display new messages as the database changes.
