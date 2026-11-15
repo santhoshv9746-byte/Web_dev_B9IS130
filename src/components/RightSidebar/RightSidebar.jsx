@@ -6,30 +6,38 @@ import { AppContext } from '../../context/AppContext'
 
 const RightSidebar = () => {
 
- const { chatUser, messages } = useContext(AppContext);
+  const { chatUser, messages } = useContext(AppContext);
 
-  useEffect(() => {
-    let tempVar = [];
-    messages.map((msg)=>{
-      if (msg.image) {
-        tempVar.push(msg.image)
-      }
-    })
-    setMsgImages(tempVar);
-  },[messages])
+  const msgImages = messages
+    .filter((msg) => msg.image)
+    .map((msg) => msg.image);
 
-  return chatUser ? (
+  return chatUser?.userData ? (
     <div className='rs'>
       <div className="rs-profile">
-        <img src={chatUSer.userData.avatar} alt="" />
-        <h3>{Date.now() - chatUser.userData.lastSeen <= 70000 ? <img src={assets.green_dot} className='dot' alt="" /> : null }{chatUSer.userData.name}</h3>
-        <p>{chatUSer.userData.bio}</p>
+
+        <img
+          src={chatUser.userData.avatar || assets.avatar_icon}
+          alt="Profile"/>
+        <h3>
+          {chatUser.userData.name}
+          {chatUser.userData.lastSeen &&
+            Date.now() - chatUser.userData.lastSeen <= 70000
+            ? <img
+              src={assets.green_dot}
+              className='dot'
+              alt="Online"
+            />
+            : null}
+        </h3>
+        <p>{chatUser.userData.bio}</p>
+
       </div>
       <hr />
       <div className="rs-media">
         <p>Media</p>
         <div>
-          {msgImages.map((url,index)=>(<img onClick={()=>window.open(url)} key={index} src={url} alt=''/>))}
+          {msgImages.map((url, index) => (<img onClick={() => window.open(url)} key={index} src={url} alt='' />))}
           // <img src={assets.pic1} alt="" />
           // <img src={assets.pic2} alt="" />
           // <img src={assets.pic3} alt="" />
