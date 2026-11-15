@@ -25,10 +25,10 @@ const signup = async (username, email, password) => {
 
         await setDoc(doc(db, "users", user.uid), {
             id: user.uid,
-            username: username.toLowerCase(), // Fixed typo here
+            username: username.toLowerCase(),
             email,
             name: "",
-            avatar: "", // This will later be replaced by your Cloudinary image URL!
+            avatar: "",
             bio: "Hey, There i am using chat app",
             lastSeen: Date.now()
         });

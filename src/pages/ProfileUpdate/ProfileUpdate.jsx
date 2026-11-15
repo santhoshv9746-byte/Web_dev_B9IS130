@@ -175,9 +175,22 @@ const ProfileUpdate = () => {
             required
           />
 
-          <button type="submit" disabled={loading}>
-            {loading ? 'Saving...' : 'Save'}
-          </button>
+
+          <div className="profile-actions">
+            <button type="submit" disabled={loading}>
+              {loading ? 'Saving...' : 'Save'}
+            </button>
+
+            <button
+              type="button"
+              className="cancel-btn"
+              onClick={() => navigate('/chat')}
+              disabled={loading}
+            >
+              Cancel
+            </button>
+          </div>
+
 
         </form>
 
