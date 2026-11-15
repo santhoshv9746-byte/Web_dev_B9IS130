@@ -1,7 +1,20 @@
-import { initializeApp } from "firebase/app";
-import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
-import { getFirestore,doc,setDoc,collection,getDoc,query,where,getDocs,updateDoc } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+
+import {
+    createUserWithEmailAndPassword,
+    getAuth,
+    sendPasswordResetEmail,
+    signInWithEmailAndPassword,
+    signOut
+} from "firebase/auth";
+
+import {
+    getFirestore,
+    doc,
+    setDoc,
+    updateDoc
+} from "firebase/firestore";
 
 import { toast } from "react-toastify";
 
@@ -22,7 +35,10 @@ export default app;
 
 const signup = async (username, email, password) => {
     try {
-        const res = await createUserWithEmailAndPassword(auth, email, password);
+        const res = await createUserWithEmailAndPassword(
+            auth, email, password
+        );
+
         const user = res.user;
 
         await setDoc(doc(db, "users", user.uid), {
@@ -40,29 +56,36 @@ const signup = async (username, email, password) => {
         });
 
         toast.success("Account created successfully!");
+
     } catch (error) {
         console.error(error);
         toast.error(error.message);
     }
-}
+};
 
 const login = async (email, password) => {
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-  } catch (error) {
-    console.error(error);
-    toast.error(error.message);
-  }
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+
+    } catch (error) {
+        console.error(error);
+        toast.error(error.message);
+    }
 };
+
 
 const logout = async () => {
     try {
         const user = auth.currentUser;
 
         if (user) {
-            await updateDoc(doc(db, 'users', user.uid), {
-                lastSeen: 0
-            });
+            try {
+                await updateDoc(doc(db, "users", user.uid), {
+                    lastSeen: 0
+                });
+            } catch (error) {
+                console.error("Error updating offline status:", error);
+            }
         }
 
         await signOut(auth);
@@ -73,12 +96,7 @@ const logout = async () => {
     }
 };
 
-const resetPass = async (email) => {
-    if (!email) {
-        toast.error("Enter your email");
-        return null;
-    }
-    
+// Reset password
 const resetPass = async (email) => {
     if (!email) {
         toast.error("Please enter your email");
@@ -88,15 +106,12 @@ const resetPass = async (email) => {
     try {
         await sendPasswordResetEmail(auth, email);
 
-        toast.success(
-            "If an account exists, a reset email will be sent."
-        );
+        toast.success("Password reset request sent");
 
     } catch (error) {
         console.error(error);
         toast.error("Unable to process password reset");
     }
 };
-
 
 export { signup, login, logout, resetPass };
