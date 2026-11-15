@@ -24,7 +24,6 @@ const ProfileUpdate = () => {
   const [prevImage, setPrevImage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Save updated profile details
   const onSubmitHandler = async (event) => {
     event.preventDefault();
 
@@ -47,19 +46,16 @@ const ProfileUpdate = () => {
 
       let imgUrl = prevImage;
 
-      // Upload image to Cloudinary
       if (image) {
         imgUrl = await uploadToCloudinary(image);
       }
 
-      // Save profile details in Firestore
       await updateDoc(docRef, {
         avatar: imgUrl,
         name: name.trim(),
         bio: bio.trim()
       });
 
-      // Fetch updated user information
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -80,7 +76,6 @@ const ProfileUpdate = () => {
     }
   };
 
-  // Load existing user details
   useEffect(() => {
     let active = true;
 
@@ -121,7 +116,6 @@ const ProfileUpdate = () => {
 
   }, [navigate]);
 
-  // Preview selected profile picture
   useEffect(() => {
     if (!image) {
       setImagePreview('');

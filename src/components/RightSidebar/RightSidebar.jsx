@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import './RightSidebar.css'
 import assets from '../../assets/assets'
 import { logout } from '../../config/firebase'
@@ -6,8 +6,7 @@ import { AppContext } from '../../context/AppContext'
 
 const RightSidebar = () => {
 
-  const { chatUSer, messages } = useContext(AppContext)
-  const [msgImages,setMsgImages] = useState([]);
+ const { chatUser, messages } = useContext(AppContext);
 
   useEffect(() => {
     let tempVar = [];
