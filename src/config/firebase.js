@@ -45,13 +45,13 @@ const signup = async (username, email, password) => {
 }
 
 const login = async (email, password) => {
-    try {
-        await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {
-        console.error(error);
-        toast.error(error.code.split('/')[1].split('-'.join(" ")));
-    }
-}
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    console.error(error);
+    toast.error(error.message);
+  }
+};
 
 const logout = async () => {
     try {
