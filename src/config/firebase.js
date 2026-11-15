@@ -1,15 +1,15 @@
 import { initializeApp } from "firebase/app";
 import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { getFirestore, doc, setDoc, collection, getDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, collection, getDoc, query, where, getDocs } from "firebase/firestore";
 import { toast } from "react-toastify";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAZ7KsncVmUWYSJFWJNh9dJ_ejYAoO__xw",
-  authDomain: "chat-app-gs-9c535.firebaseapp.com",
-  projectId: "chat-app-gs-9c535",
-  storageBucket: "chat-app-gs-9c535.firebasestorage.app",
-  messagingSenderId: "299079983326",
-  appId: "1:299079983326:web:85817848dfd4e0f120624f"
+    apiKey: "AIzaSyAZ7KsncVmUWYSJFWJNh9dJ_ejYAoO__xw",
+    authDomain: "chat-app-gs-9c535.firebaseapp.com",
+    projectId: "chat-app-gs-9c535",
+    storageBucket: "chat-app-gs-9c535.firebasestorage.app",
+    messagingSenderId: "299079983326",
+    appId: "1:299079983326:web:85817848dfd4e0f120624f"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -22,7 +22,7 @@ const signup = async (username, email, password) => {
     try {
         const res = await createUserWithEmailAndPassword(auth, email, password);
         const user = res.user;
-        
+
         await setDoc(doc(db, "users", user.uid), {
             id: user.uid,
             username: username.toLowerCase(), // Fixed typo here
@@ -32,21 +32,21 @@ const signup = async (username, email, password) => {
             bio: "Hey, There i am using chat app",
             lastSeen: Date.now()
         });
-        
+
         await setDoc(doc(db, "chats", user.uid), {
-            chatData: []
+            chatsData: []
         });
 
         toast.success("Account created successfully!");
     } catch (error) {
         console.error(error);
-        toast.error(error.code.split('/')[1].split('-'.join(" ")));
+        toast.error(error.message);
     }
 }
 
-const login = async (email,password) => {
+const login = async (email, password) => {
     try {
-        await signInWithEmailAndPassword(auth,email,password);
+        await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
         console.error(error);
         toast.error(error.code.split('/')[1].split('-'.join(" ")));
@@ -58,9 +58,9 @@ const logout = async () => {
         await signOut(auth)
     } catch (error) {
         console.error(error);
-        toast.error(error.code.split('/')[1].split('-'.join(" ")));
+        toast.error(error.message);
     }
-  
+
 }
 
 const resetPass = async (email) => {
@@ -69,14 +69,14 @@ const resetPass = async (email) => {
         return null;
     }
     try {
-        const userRef = collection(db,'users');
-        const q = query(userRef,where("email","==",email));
+        const userRef = collection(db, 'users');
+        const q = query(userRef, where("email", "==", email));
         const querySnap = await getDocs(q);
         if (!querySnap.empty) {
-            await sendPasswordResetEmail(auth,email);
+            await sendPasswordResetEmail(auth, email);
             toast.success("Reset Email Sent")
         }
-        else{
+        else {
             toast.error("Email doesn't exists")
         }
     } catch (error) {
@@ -85,4 +85,4 @@ const resetPass = async (email) => {
     }
 }
 
-export { signup,login,logout,auth,db,resetPass };
+export { signup, login, logout, resetPass };
