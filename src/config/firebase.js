@@ -1,20 +1,9 @@
 
 import { initializeApp } from "firebase/app";
 
-import {
-    createUserWithEmailAndPassword,
-    getAuth,
-    sendPasswordResetEmail,
-    signInWithEmailAndPassword,
-    signOut
-} from "firebase/auth";
+import {createUserWithEmailAndPassword,getAuth,sendPasswordResetEmail,signInWithEmailAndPassword,signOut} from "firebase/auth";
 
-import {
-    getFirestore,
-    doc,
-    setDoc,
-    updateDoc
-} from "firebase/firestore";
+import {getFirestore,doc,setDoc,updateDoc} from "firebase/firestore";
 
 import { toast } from "react-toastify";
 
