@@ -145,57 +145,6 @@ const AppContextProvider = (props) => {
         };
     }, [userData?.id]);
 
- useEffect(() => {
-        if (!userData?.id) {
-            setChatData([]);
-            return;
-        }
-
-        let active = true;
-        const chatRef = doc(db, 'chats', userData.id);
-
-        const unsubscribe = onSnapshot(chatRef, async (snapshot) => {
-            try {
-                const chatItems =
-                    snapshot.data()?.chatsData ??
-                    snapshot.data()?.chatData ??
-                    [];
-
-                const tempData = [];
-
-                for (const item of chatItems) {
-                    const userRef = doc(db, 'users', item.rId);
-                    const userSnap = await getDoc(userRef);
-
-                    if (userSnap.exists()) {
-                        tempData.push({
-                            ...item,
-                            userData: userSnap.data()
-                        });
-                    }
-                }
-
-                tempData.sort((a, b) =>
-                    (b.updatedAt || 0) - (a.updatedAt || 0)
-                );
-
-                if (active) {
-                    setChatData(tempData);
-                }
-
-            } catch (error) {
-                console.error("Error loading chats:", error);
-            }
-        });
-
-        return () => {
-            active = false;
-            unsubscribe();
-        };
-
-    }, [userData?.id]);
-
-
 
     useEffect(() => {
         if (!chatUser?.rId) return;

@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { getFirestore, doc, setDoc, collection, getDoc, query, where, getDocs } from "firebase/firestore";
+
+import { getFirestore,doc,setDoc,collection,getDoc,query,where,getDocs,updateDoc } from "firebase/firestore";
+
 import { toast } from "react-toastify";
 
 const firebaseConfig = {
@@ -76,21 +78,25 @@ const resetPass = async (email) => {
         toast.error("Enter your email");
         return null;
     }
+    
+const resetPass = async (email) => {
+    if (!email) {
+        toast.error("Please enter your email");
+        return;
+    }
+
     try {
-        const userRef = collection(db, 'users');
-        const q = query(userRef, where("email", "==", email));
-        const querySnap = await getDocs(q);
-        if (!querySnap.empty) {
-            await sendPasswordResetEmail(auth, email);
-            toast.success("Reset Email Sent")
-        }
-        else {
-            toast.error("Email doesn't exists")
-        }
+        await sendPasswordResetEmail(auth, email);
+
+        toast.success(
+            "If an account exists, a reset email will be sent."
+        );
+
     } catch (error) {
         console.error(error);
-        toast.error(error.message)
+        toast.error("Unable to process password reset");
     }
-}
+};
+
 
 export { signup, login, logout, resetPass };

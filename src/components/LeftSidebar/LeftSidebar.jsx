@@ -161,6 +161,7 @@ const LeftSidebar = () => {
 
           transaction.set(newMessageRef, {
             createdAt: serverTimestamp(),
+            participants: [userData.id, user.id],
             messages: []
           });
 
