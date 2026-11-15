@@ -30,13 +30,26 @@ const AppContextProvider = (props) => {
             await updateDoc(userRef, {
                 lastSeen: Date.now()
             })
-            setInterval(async () => {
-                if (auth.chatUser) {
-                    await updateDoc(userRef, {
-                        lastSeen: Date.now()
-                    })
-                }
-            }, 60000);
+            useEffect(() => {
+    if (!userData?.id) return;
+
+    const userRef = doc(db, 'users', userData.id);
+
+    const interval = setInterval(async () => {
+        if (auth.currentUser?.uid === userData.id) {
+            try {
+                await updateDoc(userRef, {
+                    lastSeen: Date.now()
+                });
+            } catch (error) {
+                console.error('Error updating online status:', error);
+            }
+        }
+    }, 60000);
+
+    return () => clearInterval(interval);
+
+}, [userData?.id]);
         } catch (error) {
 
         }
