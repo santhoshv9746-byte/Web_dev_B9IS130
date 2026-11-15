@@ -63,3 +63,17 @@
     font-size: 16px;
     cursor: pointer;
 }
+
+.profile-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.profile-actions button {
+    flex: 1;
+}
+
+.profile form .cancel-btn {
+    background-color: #e5e7eb;
+    color: #333;
+}

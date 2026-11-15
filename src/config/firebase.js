@@ -55,13 +55,21 @@ const login = async (email, password) => {
 
 const logout = async () => {
     try {
-        await signOut(auth)
+        const user = auth.currentUser;
+
+        if (user) {
+            await updateDoc(doc(db, 'users', user.uid), {
+                lastSeen: 0
+            });
+        }
+
+        await signOut(auth);
+
     } catch (error) {
         console.error(error);
         toast.error(error.message);
     }
-
-}
+};
 
 const resetPass = async (email) => {
     if (!email) {

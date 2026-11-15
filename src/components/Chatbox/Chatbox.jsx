@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import './Chatbox.css';
 import assets from '../../assets/assets';
 
-import { doc,getDoc,updateDoc,arrayUnion,onSnapshot } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, arrayUnion, onSnapshot } from 'firebase/firestore';
 
 import { toast } from 'react-toastify';
 import { db } from '../../config/firebase';
@@ -19,7 +19,8 @@ const Chatbox = () => {
     messages,
     setMessages,
     chatVisible,
-    setChatVisible
+    setChatVisible,
+    isChatUserOnline
   } = useContext(AppContext);
 
   const [input, setInput] = useState('');
@@ -219,15 +220,13 @@ const Chatbox = () => {
         <p>
           {chatUser.userData.name}
 
-          {Date.now() - chatUser.userData.lastSeen <= 70000
-            ? (
-              <img
-                className="dot"
-                src={assets.green_dot}
-                alt="Online"
-              />
-            )
-            : null}
+          {isChatUserOnline ? (
+            <img
+              className="dot"
+              src={assets.green_dot}
+              alt="Online"
+            />
+          ) : null}
         </p>
 
         <img

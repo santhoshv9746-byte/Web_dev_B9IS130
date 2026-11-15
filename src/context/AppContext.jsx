@@ -16,6 +16,7 @@ const AppContextProvider = (props) => {
     const [messages, setMessages] = useState([]);
     const [chatUser, setChatUser] = useState(null);
     const [chatVisible, setChatVisible] = useState(false);
+    const [now, setNow] = useState(Date.now());
 
     const loadUserData = async (uid) => {
         try {
@@ -30,11 +31,8 @@ const AppContextProvider = (props) => {
             const userInfo = userSnap.data();
             setUserData(userInfo);
 
-            if (userInfo.avatar && userInfo.name) {
-                navigate('/chat');
-            } else {
-                navigate('/profile');
-            }
+            navigate('/chat');
+
 
             await updateDoc(userRef, {
                 lastSeen: Date.now()
@@ -147,6 +145,91 @@ const AppContextProvider = (props) => {
         };
     }, [userData?.id]);
 
+ useEffect(() => {
+        if (!userData?.id) {
+            setChatData([]);
+            return;
+        }
+
+        let active = true;
+        const chatRef = doc(db, 'chats', userData.id);
+
+        const unsubscribe = onSnapshot(chatRef, async (snapshot) => {
+            try {
+                const chatItems =
+                    snapshot.data()?.chatsData ??
+                    snapshot.data()?.chatData ??
+                    [];
+
+                const tempData = [];
+
+                for (const item of chatItems) {
+                    const userRef = doc(db, 'users', item.rId);
+                    const userSnap = await getDoc(userRef);
+
+                    if (userSnap.exists()) {
+                        tempData.push({
+                            ...item,
+                            userData: userSnap.data()
+                        });
+                    }
+                }
+
+                tempData.sort((a, b) =>
+                    (b.updatedAt || 0) - (a.updatedAt || 0)
+                );
+
+                if (active) {
+                    setChatData(tempData);
+                }
+
+            } catch (error) {
+                console.error("Error loading chats:", error);
+            }
+        });
+
+        return () => {
+            active = false;
+            unsubscribe();
+        };
+
+    }, [userData?.id]);
+
+
+
+    useEffect(() => {
+        if (!chatUser?.rId) return;
+
+        const selectedId = chatUser.rId;
+        const userRef = doc(db, 'users', selectedId);
+
+        const unsubscribe = onSnapshot(userRef, (snapshot) => {
+            if (snapshot.exists()) {
+                setChatUser((prev) =>
+                    prev?.rId === selectedId
+                        ? { ...prev, userData: snapshot.data() }
+                        : prev
+                );
+            }
+        });
+
+        return () => unsubscribe();
+
+    }, [chatUser?.rId]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setNow(Date.now());
+        }, 10000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    const isChatUserOnline =
+        typeof chatUser?.userData?.lastSeen === 'number' &&
+        chatUser.userData.lastSeen > 0 &&
+        now - chatUser.userData.lastSeen < 90000;
+
     const value = {
         userData,
         setUserData,
@@ -160,7 +243,8 @@ const AppContextProvider = (props) => {
         chatUser,
         setChatUser,
         chatVisible,
-        setChatVisible
+        setChatVisible,
+        isChatUserOnline
     };
 
     return (

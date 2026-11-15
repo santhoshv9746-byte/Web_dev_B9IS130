@@ -6,7 +6,7 @@ import { AppContext } from '../../context/AppContext'
 
 const RightSidebar = () => {
 
-  const { chatUser, messages } = useContext(AppContext);
+  const { chatUser, messages, isChatUserOnline } = useContext(AppContext);
 
   const msgImages = messages
     .filter((msg) => msg.image)
@@ -16,21 +16,26 @@ const RightSidebar = () => {
     <div className='rs'>
       <div className="rs-profile">
 
+
         <img
           src={chatUser.userData.avatar || assets.avatar_icon}
-          alt="Profile"/>
+          alt="Profile"
+        />
+
         <h3>
           {chatUser.userData.name}
-          {chatUser.userData.lastSeen &&
-            Date.now() - chatUser.userData.lastSeen <= 70000
-            ? <img
+
+          {isChatUserOnline ? (
+            <img
               src={assets.green_dot}
-              className='dot'
+              className="dot"
               alt="Online"
             />
-            : null}
+          ) : null}
         </h3>
+
         <p>{chatUser.userData.bio}</p>
+
 
       </div>
       <hr />
@@ -51,7 +56,7 @@ const RightSidebar = () => {
       </div>
 
       <button onClick={logout}>Logout</button>
-    
+
     </div>
   )
     : (
