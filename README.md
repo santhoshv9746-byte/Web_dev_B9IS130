@@ -210,6 +210,6 @@ Technical documentation
 - Vercel documentation: https://vercel.com/docs
 Tutorial and AI assistance disclosure
 
-This application was developed with reference to a chat application tutorial: [https://www.youtube.com/watch?v=gbocZlm71nE](https://youtu.be/Vi9bxu-M-ag) . The codebase was subsequently adapted and tested for the B9IS130 project, including adjustments to Firebase integration, messaging, profiles, online status, and deployment.
+This application was developed with the help of tutorial [https://www.youtube.com/watch?v=gbocZlm71nE](https://youtu.be/Vi9bxu-M-ag) . The codebase was subsequently used for the B9IS130 project, including adjustments to Firebase integration, messaging, profiles, online status, and deployment.
 
 OpenAI ChatGPT was used as a development assistant for explaining React/Firebase concepts, debugging application errors, reviewing code
