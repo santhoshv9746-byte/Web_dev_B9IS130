@@ -19,8 +19,15 @@ const AppContextProvider = (props) => {
         try {
             const userRef = doc(db, 'users', uid);
             const userSnap = await getDoc(userRef);
+            
+            if (!userSnap.exists()) {
+                console.error("User profile not found in Firestore.");
+                return;
+            }
+
             const userData = userSnap.data();
             setUserData(userData);
+
             if (userData.avatar && userData.name) {
                 navigate('/chat');
             }
@@ -51,7 +58,7 @@ const AppContextProvider = (props) => {
 
 }, [userData?.id]);
         } catch (error) {
-
+            console.error('Error loading user data:', error);
         }
     }
 
