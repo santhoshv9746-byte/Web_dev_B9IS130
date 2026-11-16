@@ -163,7 +163,7 @@
     cursor: pointer;
 }
 
-.s-msg .edit-message-editor {
+.s-msg .message-editor {
     background: white;
     border: 1px solid #ddd;
     padding: 10px;
