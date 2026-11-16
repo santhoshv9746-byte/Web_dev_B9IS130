@@ -95,6 +95,7 @@ const Chatbox = () => {
 
       await updateDoc(doc(db, 'messages', messagesId), {
         messages: arrayUnion({
+          id: crypto.randomUUID(),
           sId: userData.id,
           text: text,
           createdAt: new Date()
