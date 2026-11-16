@@ -189,7 +189,7 @@ const Chatbox = () => {
     setDeletingId(messageId);
 
     try {
-      const messageRef = doc(db, 'messages', messageId);
+      const messageRef = doc(db, 'messages', messagesId);
 
       let wasLatestMessage = false;
       let nextPreview = '';
@@ -514,8 +514,6 @@ const Chatbox = () => {
                 </button>
 
               )}
-
-                // working on this
 
             {msg.sId === userData.id &&
               msg.id &&
