@@ -3,10 +3,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import './Chatbox.css';
 import assets from '../../assets/assets';
 
-import { doc, getDoc, updateDoc, arrayUnion, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, arrayUnion, onSnapshot, runTransaction } from 'firebase/firestore';
 
 import { toast } from 'react-toastify';
-import { db } from '../../config/firebase';
+import { auth, db } from '../../config/firebase';
 import { AppContext } from '../../context/AppContext';
 import uploadToCloudinary from '../../config/upload';
 
@@ -26,6 +26,9 @@ const Chatbox = () => {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [editedText, setEditedText] = useState('');
+  const [savingEdit, setSavingEdit] = useState(false);
 
   const updateChatSummaries = async (lastMessage) => {
 
@@ -72,6 +75,89 @@ const Chatbox = () => {
       await updateDoc(userChatsRef, {
         chatsData: updatedChats
       });
+    }
+  };
+
+
+  const savingEditMessage = async () => {
+    const newText = editedText.trim();
+
+    if (!newText || !editingTex || !messagesId || savingEdit) {
+      return;
+    }
+
+    if (auth.currentUser?.uid !== userData?.id) {
+      toast.error('Please log in again');
+      return;
+    }
+
+    setSavingEdit(true);
+
+    try {
+      const messageRef = doc(db, 'messages', messagesId);
+      let isLatestMessage = false;
+
+
+      await runTransaction(db, async (transaction) => {
+        const snapshot = await transaction.get(messageRef);
+
+        if (!snapshot.exists()) {
+          throw new Error('Conversation not found');
+        }
+
+        const storedMessages = snapshot.data().messages || [];
+
+        const index = storedMessages.findIndex(
+          (message) => message.id === editingId
+        );
+
+        if (index === -1) {
+          throw new Error('Message not found');
+        }
+
+        const originalMessage = storedMessages[index];
+
+        if (
+          originalMessage.sId !== auth.currentUser?.uid ||
+          originalMessage.image
+        ) {
+          throw new Error('You cannot edit this message');
+        }
+
+        isLatestMessage = index === storedMessages.length - 1;
+
+        const updatedMessages = storedMessages.map((message) =>
+          message.id === editingId
+            ? {
+              ...message,
+              text: newText,
+              editedAt: new Date()
+            }
+            : message
+        );
+
+        transaction.update(messageRef, {
+          messages: updatedMessages
+        });
+      });
+
+      setEditingId(null);
+      setEditedText('');
+      toast.success('Message updated successfully');
+
+      if (isLatestMessage) {
+        try {
+          await updateChatSummaries(newText.slice(0, 30));
+        } catch (error) {
+          console.error('Error updating chat preview:', error);
+        }
+      }
+
+    } catch (error) {
+      console.error('Error editing message:', error);
+      toast.error(error.message);
+    } finally {
+      setSavingEdit(false);
     }
   };
 
