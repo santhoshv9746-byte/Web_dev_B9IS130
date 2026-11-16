@@ -202,3 +202,18 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+.delete-message-btn {
+    margin-bottom: 30px;
+    padding: 5px;
+    border: none;
+    background: transparent;
+    color: #d32f2f;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.delete-message-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
