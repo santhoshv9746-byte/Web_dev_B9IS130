@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import './Chatbox.css';
 import assets from '../../assets/assets';
 
-import { doc, getDoc, updateDoc, arrayUnion, onSnapshot, runTransaction } from 'firebase/firestore';
+import { doc,getDoc,updateDoc,arrayUnion,onSnapshot,runTransaction } from 'firebase/firestore';
 
 import { toast } from 'react-toastify';
 import { auth, db } from '../../config/firebase';
@@ -26,6 +26,7 @@ const Chatbox = () => {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [uploading, setUploading] = useState(false);
+
   const [editingId, setEditingId] = useState(null);
   const [editedText, setEditedText] = useState('');
   const [savingEdit, setSavingEdit] = useState(false);
@@ -47,7 +48,6 @@ const Chatbox = () => {
       }
 
       const data = userChatsSnapshot.data();
-
       const chats = data.chatsData ?? data.chatData ?? [];
 
       const chatIndex = chats.findIndex(
@@ -78,11 +78,16 @@ const Chatbox = () => {
     }
   };
 
+  const saveEditedMessage = async () => {
 
-  const savingEditMessage = async () => {
     const newText = editedText.trim();
 
-    if (!newText || !editingTex || !messagesId || savingEdit) {
+    if (
+      !newText ||
+      !editingId ||
+      !messagesId ||
+      savingEdit
+    ) {
       return;
     }
 
@@ -94,11 +99,12 @@ const Chatbox = () => {
     setSavingEdit(true);
 
     try {
+
       const messageRef = doc(db, 'messages', messagesId);
       let isLatestMessage = false;
 
-
       await runTransaction(db, async (transaction) => {
+
         const snapshot = await transaction.get(messageRef);
 
         if (!snapshot.exists()) {
@@ -129,10 +135,10 @@ const Chatbox = () => {
         const updatedMessages = storedMessages.map((message) =>
           message.id === editingId
             ? {
-              ...message,
-              text: newText,
-              editedAt: new Date()
-            }
+                ...message,
+                text: newText,
+                editedAt: new Date()
+              }
             : message
         );
 
@@ -143,13 +149,14 @@ const Chatbox = () => {
 
       setEditingId(null);
       setEditedText('');
+
       toast.success('Message updated successfully');
 
       if (isLatestMessage) {
         try {
           await updateChatSummaries(newText.slice(0, 30));
         } catch (error) {
-          console.error('Error updating chat preview:', error);
+          console.error('Chat preview update error:', error);
         }
       }
 
@@ -226,6 +233,7 @@ const Chatbox = () => {
 
       await updateDoc(doc(db, 'messages', messagesId), {
         messages: arrayUnion({
+          id: crypto.randomUUID(),
           sId: userData.id,
           image: fileUrl,
           createdAt: new Date()
@@ -276,9 +284,7 @@ const Chatbox = () => {
     const unsubscribe = onSnapshot(
       messageRef,
       (snapshot) => {
-
         const storedMessages = snapshot.data()?.messages ?? [];
-
         setMessages([...storedMessages].reverse());
       },
       (error) => {
@@ -287,11 +293,14 @@ const Chatbox = () => {
       }
     );
 
-    return () => {
-      unsubscribe();
-    };
+    return () => unsubscribe();
 
   }, [messagesId, setMessages]);
+
+  useEffect(() => {
+    setEditingId(null);
+    setEditedText('');
+  }, [messagesId]);
 
   return chatUser?.userData && userData ? (
 
@@ -305,7 +314,7 @@ const Chatbox = () => {
         />
 
         <p>
-          {chatUser.userData.name}
+          {chatUser.userData.name || chatUser.userData.username}
 
           {isChatUserOnline ? (
             <img
@@ -336,7 +345,7 @@ const Chatbox = () => {
         {messages.map((msg, index) => (
 
           <div
-            key={index}
+            key={msg.id || index}
             className={msg.sId === userData.id ? 's-msg' : 'r-msg'}
           >
 
@@ -348,19 +357,78 @@ const Chatbox = () => {
                 alt="Shared image"
               />
 
+            ) : editingId === msg.id && msg.id ? (
+
+              <div className="message-editor">
+
+                <input
+                  type="text"
+                  value={editedText}
+                  onChange={(e) => setEditedText(e.target.value)}
+                  maxLength={1000}
+                  disabled={savingEdit}
+                />
+
+                <div className="message-edit-actions">
+
+                  <button
+                    type="button"
+                    onClick={saveEditedMessage}
+                    disabled={savingEdit || !editedText.trim()}
+                  >
+                    {savingEdit ? 'Saving...' : 'Save'}
+                  </button>
+
+                  <button
+                    type="button"
+                    disabled={savingEdit}
+                    onClick={() => {
+                      setEditingId(null);
+                      setEditedText('');
+                    }}
+                  >
+                    Cancel
+                  </button>
+
+                </div>
+
+              </div>
+
             ) : (
 
-              <p className="msg">{msg.text}</p>
+              <p className="msg">
+                {msg.text}
+                {msg.editedAt ? ' (edited)' : ''}
+              </p>
 
             )}
+
+            {msg.sId === userData.id &&
+              msg.id &&
+              !msg.image &&
+              editingId !== msg.id && (
+
+                <button
+                  type="button"
+                  className="edit-message-btn"
+                  disabled={savingEdit}
+                  onClick={() => {
+                    setEditingId(msg.id);
+                    setEditedText(msg.text || '');
+                  }}
+                >
+                  Edit
+                </button>
+
+              )}
 
             <div>
 
               <img
                 src={
-                  msg.sId === userData.id
+                  (msg.sId === userData.id
                     ? userData.avatar
-                    : chatUser.userData.avatar
+                    : chatUser.userData.avatar) || assets.avatar_icon
                 }
                 alt="Profile"
               />
