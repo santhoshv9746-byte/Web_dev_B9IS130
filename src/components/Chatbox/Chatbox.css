@@ -152,3 +152,53 @@
         display: none;
     }
 }
+
+.edit-message-btn {
+    margin-bottom: 30px;
+    padding: 5px;
+    border: none;
+    background: transparent;
+    color: #077eff;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.s-msg .edit-message-editor {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    width: 220px;
+    text-align: left;
+}
+
+.message-editor input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+
+.message-edit-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.message-edit-actions button {
+    background: #077eff;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.message-edit-actions button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
