@@ -26,6 +26,7 @@ Project objectives
 - Implement registration, login, logout, and password reset.
 - Store application data in a cloud-hosted database.
 - Display conversations and messages in real time.
+- Implement Create, Read, Update and Delete (CRUD) operations for text messages.
 - Integrate an external service for image uploads.
 - Deploy the frontend and maintain the project using Git and GitHub.
 
@@ -74,12 +75,15 @@ Main file: src/components/LeftSidebar/LeftSidebar.jsx
 - A Firestore transaction writes the initial conversation document and updates both chat lists.
 - The sidebar displays conversation previews ordered by their latest update time.
 
-### 4.3 Real-Time Text Messaging
+### 4.3 Real-Time Text Messaging and CRUD
 Main files: src/components/Chatbox/Chatbox.jsx, src/context/AppContext.jsx
-- Users send and receive text messages within a selected conversation.
-- Firestore onSnapshot listeners display new messages as the database changes.
-- Messages include the sender's ID and creation time.
-- The conversation preview is updated after sending a message.
+- **Create:** Users send new text messages, each assigned a unique ID with `crypto.randomUUID()`.
+- **Read:** Firestore `onSnapshot` listeners display conversations and message changes in real time.
+- **Update:** Users can edit their own newer text messages. A Firestore transaction updates the message and adds an `editedAt` timestamp; the interface shows an edited indicator.
+- **Delete:** Users can delete their own newer text messages after confirmation. A Firestore transaction removes the message from the conversation.
+- Messages store a sender ID and creation timestamp. The chat preview is also updated when the latest message is sent, edited or deleted.
+- Edit and Delete controls are available only for the signed-in user's own text messages that have unique IDs. Older messages without IDs remain readable.
+- The CRUD implementation applies to **text messages**, not all Firestore records or uploaded images.
 ### 4.4 Image Sharing and Media Gallery
 Main files: src/config/upload.js, src/components/Chatbox/Chatbox.jsx, src/components/RightSidebar/RightSidebar.jsx
 - Users can send JPG or PNG image files up to 5 MB.
@@ -115,7 +119,7 @@ Stores a user's chatsData array. Each conversation entry may include:
 - updatedAt – time used to sort chats
 - messageSeen – message-view status used by the interface
 messages/{messageId}
-Stores the conversation's createdAt timestamp, participants array, and messages array. Individual messages contain sId, createdAt, and either text or image.
+Stores the conversation's createdAt timestamp, participants array, and messages array. Individual messages contain sId, createdAt, and either text or image. Newly created messages also have a unique id; edited text messages have an editedAt timestamp. Older messages may not have these additional fields.
 
 ## 6. Project Directory Structure
 Web_dev_B9IS130/
@@ -180,7 +184,7 @@ Live URL:(https://web-dev-b9-is-130.vercel.app/chat)
 - Important outstanding issue: The currently used temporary Firestore rules allow any authenticated account to read and write other users' chat lists and message documents. They do not provide conversation-level privacy and should not be presented as production-ready authorization.
 - Cloudinary uploads use an unsigned client-side upload preset. Hosted image URLs must not be assumed to be private; secure upload controls and access restrictions are needed for sensitive content.
 - The project does not currently include an independent Express backend or role-based permission system.
-- The current interface supports creating, reading, and updating several kinds of data, but does not implement full create/read/update/delete operations for all records.
+- The application now implements full Create, Read, Update and Delete (CRUD) functionality for text messages. This does not extend to every Firestore record or image message. Sender ownership is checked in the interface and transaction code, but is not yet enforced by the current Firestore Security Rules.
 - Chat presence is based on recent timestamps and may be delayed or inaccurate when a browser closes unexpectedly.
 Before production use: Enforce participant-level access to Firestore chat/message data, tighten profile visibility and validation, protect image uploads, and test security rules with multiple accounts. Until then, use only test accounts and non-sensitive data.
 
@@ -191,6 +195,8 @@ Authentication	Register, log in, log out, and request password reset
 User discovery	Search for another registered username
 Conversation setup	Start a new one-to-one conversation
 Messaging	Send text and receive replies between two accounts
+Text-message CRUD	Create and read a new text message, edit it, then confirm deletion; verify the changes in both accounts
+Message ownership (interface)	Check that Edit and Delete controls appear only on the signed-in user's own text messages with IDs
 Media	Send an image and view it in the sidebar gallery
 Profiles	Update display name, biography, and image
 Online status	Observe activity indicator after login/logout
