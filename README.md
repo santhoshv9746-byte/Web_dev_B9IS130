@@ -218,15 +218,27 @@ Technical documentation
 - React Router documentation: https://reactrouter.com/
 - Vercel documentation: https://vercel.com/docs
 
-### YouTube learning resources (for reference)
-These videos cover technologies and concepts
+### YouTube Learning Resources
 
-(https://www.youtube.com/watch?v=8VHVWPkWR8Q) 
-(https://www.youtube.com/watch?v=WpIDez53SK4) 
-(https://www.youtube.com/watch?v=knk5Fjrpde0)
-(https://www.youtube.com/watch?v=BWzTqP5mv7I)
-[https://www.youtube.com/watch?v=gbocZlm71nE]
-(https://youtu.be/Vi9bxu-M-ag)
+The following YouTube resources are related to the technologies and concepts used in the ChatApp project.
+
+1. **Cloudinary Image Upload Integration with React**  
+   https://www.youtube.com/watch?v=8VHVWPkWR8Q
+
+2. **Firebase Setup and User Authentication in React**  
+   https://www.youtube.com/watch?v=WpIDez53SK4
+
+3. **Cloud Firestore Database and Real-Time Updates**  
+   https://www.youtube.com/watch?v=knk5Fjrpde0
+
+4. **CRUD Operations Using React and Firebase**  
+   https://www.youtube.com/watch?v=BWzTqP5mv7I
+
+5. **React Real-Time Chat Application Development**  
+   https://www.youtube.com/watch?v=gbocZlm71nE
+
+6. **Additional Chat Application Development Reference**  
+   https://youtu.be/Vi9bxu-M-ag
 
 AI-assisted explanations and debugging support were consulted during development.
 
