@@ -217,17 +217,16 @@ Technical documentation
 - Cloudinary image upload documentation: https://cloudinary.com/documentation/image_upload_api_reference
 - React Router documentation: https://reactrouter.com/
 - Vercel documentation: https://vercel.com/docs
-### Additional YouTube learning resources (for reference)
-These videos cover technologies and concepts used in ChatApp. They are listed as supplementary learning resources, not as a claim that every tutorial was followed during development.
 
-- **Cloudinary image upload with React:** [React Drag & Drop Image Upload Tutorial (Cloudinary & Dropzone) — Cloudinary](https://www.youtube.com/watch?v=8VHVWPkWR8Q) — upload endpoints and unsigned presets.
-- **Firebase setup and authentication:** [Setting Up Firebase Auth with React: Step-by-Step Tutorial — Code Radiance](https://www.youtube.com/watch?v=WpIDez53SK4) — connecting React to Firebase and setting up login and registration.
-- **Firestore real-time listeners and security:** [JavaScript Crash Course: Firestore and Auth — Firebase](https://www.youtube.com/watch?v=knk5Fjrpde0) — `onSnapshot`, data models, authentication and security rules.
-- **Firestore CRUD with React:** [CRUD Tutorial Using React + Firebase — Web Dev Mastery](https://www.youtube.com/watch?v=BWzTqP5mv7I) — creating, reading, updating and deleting Firestore data.
+### YouTube learning resources (for reference)
+These videos cover technologies and concepts
 
-Tutorial and AI assistance disclosure
-
-This application was developed with the help of tutorial [https://www.youtube.com/watch?v=gbocZlm71nE](https://youtu.be/Vi9bxu-M-ag) . The codebase was subsequently used for the B9IS130 project, including adjustments to Firebase integration, messaging, profiles, online status, and deployment.
+(https://www.youtube.com/watch?v=8VHVWPkWR8Q) 
+(https://www.youtube.com/watch?v=WpIDez53SK4) 
+(https://www.youtube.com/watch?v=knk5Fjrpde0)
+(https://www.youtube.com/watch?v=BWzTqP5mv7I)
+[https://www.youtube.com/watch?v=gbocZlm71nE]
+(https://youtu.be/Vi9bxu-M-ag)
 
 AI-assisted explanations and debugging support were consulted during development.
 
@@ -242,5 +241,6 @@ Google Gemini was also used as an AI assistance tool to help understand and trou
 - Synchronizing chat previews after messaging changes.
 - React hooks and state management, including `useState` and `useEffect`.
 - Error handling and input validation.
+- i also used for documentation structure as well
 
-AI resources were used to support learning, implementation and debugging; the application's functionality was tested through the project. Shared Gemini conversation reference: https://share.gemini.google/bXHMUuIa08wN
+ https://share.gemini.google/bXHMUuIa08wN
