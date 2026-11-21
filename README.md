@@ -222,3 +222,17 @@ Tutorial and AI assistance disclosure
 This application was developed with the help of tutorial [https://www.youtube.com/watch?v=gbocZlm71nE](https://youtu.be/Vi9bxu-M-ag) . The codebase was subsequently used for the B9IS130 project, including adjustments to Firebase integration, messaging, profiles, online status, and deployment.
 
 OpenAI ChatGPT was used as a development assistant for explaining React/Firebase concepts, debugging application errors, reviewing code
+
+Google Gemini was also used as an AI assistance tool to help understand and troubleshoot technical parts of the project. The areas supported by AI assistance included:
+- Firestore transactions for creating conversations and editing or deleting messages.
+- Real-time messaging and Firestore `onSnapshot` listeners.
+- Firebase Authentication, authorization concepts, and Firestore Security Rules.
+- Cloudinary API integration for image uploads.
+- Online/offline activity indicators based on timestamps.
+- React Context API for sharing application state.
+- Firestore database collections and document structure.
+- Synchronizing chat previews after messaging changes.
+- React hooks and state management, including `useState` and `useEffect`.
+- Error handling and input validation.
+
+AI resources were used to support learning, implementation and debugging; the application's functionality was tested through the project. Shared Gemini conversation reference: https://share.gemini.google/bXHMUuIa08wN
