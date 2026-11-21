@@ -220,7 +220,7 @@ Technical documentation
 
 ### YouTube Learning Resources
 
-The following YouTube resources are related to the technologies and concepts used in the ChatApp project.
+The following YouTube resources are related to the technologies and concepts used in this project.
 
 1. **Cloudinary Image Upload Integration with React**  
    https://www.youtube.com/watch?v=8VHVWPkWR8Q
