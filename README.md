@@ -4,7 +4,7 @@
 ChatApp is a web-based messaging application developed with React, Firebase, and Cloudinary. It allows registered users to find one another, exchange text messages and images, and update their personal profiles. Firestore listeners keep conversation data synchronized without manually refreshing the page.
 
 Source code: https://github.com/santhoshv9746-byte/Web_dev_B9IS130
-Live application: https://web-dev-b9-is-130.vercel.app/chat
+Live application: https://web-dev-b9-is-130.vercel.app
 ## Table of Contents
 1. Project Overview
 2. Technology Stack
