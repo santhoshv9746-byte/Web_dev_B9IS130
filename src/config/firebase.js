@@ -1,9 +1,9 @@
 
 import { initializeApp } from "firebase/app";
 
-import {createUserWithEmailAndPassword,getAuth,sendPasswordResetEmail,signInWithEmailAndPassword,signOut} from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, setPersistence, browserSessionPersistence } from "firebase/auth";
 
-import {getFirestore,doc,setDoc,updateDoc} from "firebase/firestore";
+import { getFirestore, doc, setDoc, updateDoc } from "firebase/firestore";
 
 import { toast } from "react-toastify";
 
@@ -24,6 +24,9 @@ export default app;
 
 const signup = async (username, email, password) => {
     try {
+
+        await setPersistence(auth, browserSessionPersistence);
+
         const res = await createUserWithEmailAndPassword(
             auth, email, password
         );
@@ -54,6 +57,8 @@ const signup = async (username, email, password) => {
 
 const login = async (email, password) => {
     try {
+
+        await setPersistence(auth, browserSessionPersistence);
         await signInWithEmailAndPassword(auth, email, password);
 
     } catch (error) {
