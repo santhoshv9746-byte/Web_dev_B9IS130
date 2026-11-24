@@ -68,6 +68,9 @@ Main files: src/pages/Login/Login.jsx, src/config/firebase.js
 - Firebase Authentication manages account credentials.
 - The app creates a matching user profile and an empty chat-list document in Firestore.
 - Existing users can sign in, log out, and request a password-reset email.
+- Session-based authentication is implemented using Firebase browserSessionPersistence.
+- Users remain logged in during a page refresh, but the session normally ends when the browser tab is closed.
+
 ### 4.2 User Search and Conversation Creation
 Main file: src/components/LeftSidebar/LeftSidebar.jsx
 - Users can search for another account by username.
@@ -172,11 +175,15 @@ Service configuration
 - Firestore rules must be configured and tested before exposing the app to real users.
 This repository currently keeps client-side service configuration in source files; it does not include a separate Express or Node.js API server.
 
-## 8. Deployment
-The React frontend is deployed using Vercel, with GitHub used to track code changes. A production build is generated using npm run build and served from the Vite dist output.
 
-For a new deployment, import the GitHub repository into Vercel and verify that its build command and output directory match the Vite application. Add the deployed hostname to the Firebase Authentication authorized-domains list. Check direct access to /chat and /profile, including page refresh behavior, because client-side routes may require a hosting rewrite rule.
-Live URL:(https://web-dev-b9-is-130.vercel.app/chat)
+## 8. Deployment
+
+The React frontend is deployed using Vercel, with GitHub used to track code changes. The production build is generated using npm run build and served from the Vite dist folder.
+Firebase provides authentication and database services, while Cloudinary handles image uploads and hosting.
+The vercel.json file contains a rewrite configuration that allows React Router to handle direct URL access and page refreshes. This was added to resolve the 404 routing error encountered after deployment.
+
+Live application: https://web-dev-b9-is-130.vercel.app/
+
 
 ## 9. Security and Current Limitations
 - Firebase Authentication verifies account sign-in. Passwords are handled by Firebase Authentication rather than stored in Firestore user documents.
@@ -186,11 +193,14 @@ Live URL:(https://web-dev-b9-is-130.vercel.app/chat)
 - The project does not currently include an independent Express backend or role-based permission system.
 - The application now implements full Create, Read, Update and Delete (CRUD) functionality for text messages. This does not extend to every Firestore record or image message. Sender ownership is checked in the interface and transaction code, but is not yet enforced by the current Firestore Security Rules.
 - Chat presence is based on recent timestamps and may be delayed or inaccurate when a browser closes unexpectedly.
+- Session-based authentication reduces the risk of previous login sessions remaining active after closing the browser tab.
+- Authentication-state redirection is implemented, while explicit protected React routes remain an area for future improvement.
 Before production use: Enforce participant-level access to Firestore chat/message data, tighten profile visibility and validation, protect image uploads, and test security rules with multiple accounts. Until then, use only test accounts and non-sensitive data.
 
 ## 10. Testing
 The application has been exercised manually with two test accounts. Relevant functional checks include:
 Area	Manual test
+The testing process was mainly based on manual functional testing using two different user accounts. Automated unit and integration testing have not yet been implemented and remain areas for future improvement.
 Authentication	Register, log in, log out, and request password reset
 User discovery	Search for another registered username
 Conversation setup	Start a new one-to-one conversation
@@ -209,6 +219,14 @@ Deployment	Open the deployed frontend and check navigation
 
 ## 11. References and Development Acknowledgements
 Technical documentation
+- Axios documentation: https://axios-http.com/docs/intro
+- React Hooks: https://react.dev/reference/react/hooks
+- React Context API: https://react.dev/reference/react/useContext
+- Firebase session persistence: https://firebase.google.com/docs/auth/web/auth-state-persistence
+- Firestore real-time listeners: https://firebase.google.com/docs/firestore/query-data/listen
+- Firestore data model: https://firebase.google.com/docs/firestore/data-model
+- Firestore transactions: https://firebase.google.com/docs/firestore/manage-data/transactions
+- Cloudinary client-side uploading: https://cloudinary.com/documentation/client_side_uploading
 - React documentation: https://react.dev/
 - Vite documentation: https://vite.dev/guide/
 - Firebase Authentication documentation: https://firebase.google.com/docs/auth
@@ -240,9 +258,13 @@ The following YouTube resources are related to the technologies and concepts use
 6. **Additional Chat Application Development Reference**  
    https://youtu.be/Vi9bxu-M-ag
 
-AI-assisted explanations and debugging support were consulted during development.
 
-Google Gemini was also used as an AI assistance tool to help understand and troubleshoot technical parts of the project. The areas supported by AI assistance included:
+### AI Assistance Declaration
+
+ChatGPT and Google Gemini were used during the development of ChatApp to assist with coding, debugging, understanding technical concepts and improving documentation. The suggested code was reviewed and tested during development to ensure that it met the application requirements.
+
+Official technical documentation and tutorials were also used as learning resources.
+
 - Firestore transactions for creating conversations and editing or deleting messages.
 - Real-time messaging and Firestore `onSnapshot` listeners.
 - Firebase Authentication, authorization concepts, and Firestore Security Rules.
