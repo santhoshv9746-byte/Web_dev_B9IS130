@@ -261,7 +261,7 @@ The following YouTube resources are related to the technologies and concepts use
 
 ### AI Assistance Declaration
 
-ChatGPT and Google Gemini were used during the development of ChatApp to assist with coding, debugging, understanding technical concepts and improving documentation. The suggested code was reviewed and tested during development to ensure that it met the application requirements.
+Google Gemini were used during the development of ChatApp to assist with coding, debugging, understanding technical concepts and improving documentation. The suggested code was reviewed and tested during development to ensure that it met the application requirements.
 
 Official technical documentation and tutorials were also used as learning resources.
 
